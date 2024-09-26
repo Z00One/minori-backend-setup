@@ -1,0 +1,6 @@
+[submodule "gin"]
+	path = gin
+	url = https://github.com/YJU-OKURA/project_minori-gin-deployment-repo.git
+[submodule "nest"]
+	path = nest
+	url = https://github.com/YJU-OKURA/project_minori-nest-deployment-repo.git
