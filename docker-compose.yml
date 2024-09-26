@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  app-gin:
+    build:
+      dockerfile: Dockerfile.gin
+    ports:
+      - "80:8080"
+    restart: unless-stopped
+    volumes:
+      - ./.gin.env:/app/.env
+    depends_on:
+      - db-postgres
+      - db-redis
+      - app-nest
+    networks:
+      - app-gin-network
+
+  app-nest:
+    build:
+      context: nest
+      dockerfile: DockerFile
+    ports:
+      - "3001:3000"
+    env_file: .postgres.env
+    restart: unless-stopped
+    volumes:
+      - ./local-config.ts:/usr/src/app/src/common/configs/config.ts
+    depends_on:
+      - db-postgres
+    networks:
+      - app-nest-network
+
+  db-postgres:
+    image: postgres:alpine
+    env_file: .postgres.env
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-gin-network
+      - app-nest-network
+
+  db-redis:
+    image: redis:alpine
+    env_file: .redis.env
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - app-gin-network
+
+networks:
+  app-gin-network:
+  app-nest-network:
+
+volumes:
+  pgdata:
+  redisdata:
