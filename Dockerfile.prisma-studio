@@ -1,0 +1,14 @@
+# Base image
+FROM node:18-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install Prisma Studio
+RUN npm install -g @prisma/studio
+
+# Copy Prisma schema
+COPY ./nest/prisma ./prisma
+
+# Run Prisma Studio
+CMD ["npx", "prisma", "studio"]
