@@ -1,0 +1,26 @@
+# Base image
+FROM node:18-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY ./nest/package*.json ./
+
+# Install app dependencies
+RUN npm install
+
+# Bundle app source
+COPY ./nest .
+
+# Copy the local-config.ts file to the app directory
+COPY ./local-config.ts ./src/common/configs/config.ts
+
+# Run Prisma command
+RUN npx prisma generate
+
+# Creates a "dist" folder with the production build
+RUN npm run build
+
+# Start the server using the production build
+CMD [ "node", "dist/src/main.js" ]
