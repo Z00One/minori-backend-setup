@@ -11,7 +11,7 @@ COPY ./gin/go.mod ./gin/go.sum ./
 RUN go mod download
 
 # Copy the source code
-COPY /.gin .
+COPY ./gin .
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -buildvcs=false -o main . 
