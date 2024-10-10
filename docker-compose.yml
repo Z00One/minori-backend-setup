@@ -32,7 +32,7 @@ services:
 
   app-nest:
     build:
-      dockerfile: DockerFile.nest
+      dockerfile: Dockerfile.nest
     expose:
       - "3000"
     env_file: .postgres.env
@@ -67,7 +67,6 @@ services:
       dockerfile: Dockerfile.prisma-studio
     ports:
       - "5555:5555"
-    command: npx prisma studio
     env_file: .postgres.env
     restart: unless-stopped
     depends_on:
